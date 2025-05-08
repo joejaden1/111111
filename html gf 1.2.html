@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Sunshine?</title>
+    <style>
+        #hearts-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 2;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 24px;
+            color: #ff69b4;
+            animation: float 2s ease-out forwards;
+            transform: translateX(0);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) translateX(var(--x-drift)) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'Arial', sans-serif;
+            flex-direction: column;
+            margin: 0;
+            padding:0;
+            overflow: hidden;
+        }
+
+        .video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+    z-index: -1;
+}
+
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #f4ececb8;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 40px;
+            text-shadow: 3px 5px 5px rgba(255, 0, 183, 0.721);
+        }
+
+        .buttons {
+            margin-top: 20px;
+        }
+
+        .yes-button, .no-button {
+            font-size: 1.3em;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+           
+        }
+
+        .yes-button {
+            background-color: #00000030;
+            color: rgb(255, 0, 212);
+            font-weight:bold 100;
+           font-family:'Times New Roman', Times, serif;
+           border: solid 4px;
+           border-color: rgba(0, 0, 0, 0.131);
+           border-radius: 20px;
+           box-shadow: 3px 5px 3px rgba(255, 0, 183, 0.721);
+        }
+
+        .no-button {
+            background-color: #00000028;
+            color: rgb(255, 0, 212);
+            font-weight:bold 100;
+            font-family:'Times New Roman', Times, serif;
+            border: solid 4px;
+           border-color: rgba(0, 0, 0, 0.136);
+           border-radius: 20px;
+            box-shadow: 3px 5px 3px rgba(255, 0, 183, 0.721);
+        }
+        .gif_container img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+    max-height: 100%;
+  }
+    </style>
+</head>
+<body>
+    <audio autoplay loop>
+        <source src= "C:\Users\harra\OneDrive\Bureau\Nouveau dossier\.vscode\step by step.mp3">
+        Your browser does not support the audio element.
+      </audio>
+
+    <div id="hearts-container"></div>
+    <video class="video-bg" autoplay muted loop playsinline playsinline preload="auto">
+        <source src="C:\Users\harra\OneDrive\Bureau\Nouveau dossier\.vscode\13950-253035807.mp4">
+        Your browser does not support HTML5 video.
+      </video>
+      
+    <div class="container">
+        <h1>Will You Be My Sunshine? </h1>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <div class="buttons">
+            <button class="yes-button" onclick="handleYesClick()" aria-label="Say Yes">Yes 💖</button>
+            <button class="no-button" onclick="handleNoClick()" aria-label="Say No">No 😢</button>
+        </div>
+        <div class="gif_container">
+            <img src="https://media2.giphy.com/media/v1.Y2lkPTc5MGI3NjExajRzZm5kNGxkNng5NzF1NGx4NTJqNXNvOWlkZmk4cWVzbDVibHpzZiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/IcJ6n6VJNjRNS/giphy.gif" alt=cutegif>
+    </div>
+
+    <script>
+        const messages = [
+            "you sure?",
+            "Really sure??😟",
+            "ur mad at me?",
+            "Pookie please...☹️",
+            "Just think about it bae",
+            "If you say no, I will cry...😭",
+            "I will be very sad...💔",
+            "I will burn the city...💔💔💔",
+            "Ok fine, I will stop...😞",
+            "Just kidding, say yes my love please! ☺️❤️"
+        ];
+
+        let messageIndex = 0;
+
+        function handleNoClick() {
+    const noButton = document.querySelector('.no-button');
+    const yesButton = document.querySelector('.yes-button');
+    
+    noButton.textContent = messages[messageIndex];
+    messageIndex = (messageIndex + 1) % messages.length;
+
+    const currentSize = parseFloat(window.getComputedStyle(yesButton).fontSize);
+    const newSize = currentSize * 1.2; // Grow gradually each time
+    yesButton.style.fontSize = `${newSize}px`;
+}
+
+        function handleYesClick() {
+    const yesButton = document.querySelector('.yes-button');
+    const noButton = document.querySelector('.no-button');
+    yesButton.disabled = true;
+    noButton.disabled = true;
+    yesButton.classList.add('clicked');
+    createFloatingHearts();
+    setTimeout(() => {
+        yesButton.classList.remove('clicked');
+        window.location.href = "yes_page.html";
+    }, 1000);
+}
+
+        function createFloatingHearts() {
+            const heartsContainer = document.getElementById("hearts-container");
+            const heartEmojis = ["❤️", "💖", "💘", "💕", "💓", "💗", "💞", "💝"];
+
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement("div");
+                heart.className = "heart";
+                heart.textContent = heartEmojis[Math.floor(Math.random() * heartEmojis.length)];
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.top = "80%";
+                heart.style.fontSize = `${20 + Math.random() * 20}px`; // randomize heart size
+                heartsContainer.appendChild(heart);
+                const xDrift = (Math.random() - 0.5) * 100; // -50px to +50px
+                heart.style.setProperty('--x-drift', `${xDrift}px`);
+
+                setTimeout(() => {
+                    heart.remove();
+                }, 2000);
+            }
+        }
+    </script>
+</body>
+</html>
